@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AlbumController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\AlbumController::class,'index'])->middleware('auth');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('albums', AlbumController::class)->middleware('auth');
+
+Route::get('/logout', function () {
+
+    Auth::logout();
+    return redirect('/login');
+});
+
+
+
+
